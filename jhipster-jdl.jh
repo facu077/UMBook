@@ -1,0 +1,41 @@
+entity Usuario {
+	
+}
+
+entity Amigo {
+	estado String
+}
+
+entity Muro {
+
+}
+
+entity Mensaje {
+	texto String
+    fecha Instant
+}
+
+entity Album {
+
+}
+
+entity Foto {
+	imagen ImageBlob
+}
+
+
+relationship OneToOne {
+	User{usuario} to Usuario
+    Usuario{muro} to Muro
+}
+
+relationship OneToMany {
+	Muro{mensajes} to Mensaje
+    Usuario{amigos} to Amigo
+    Usuario{albums} to Album
+    Album{fotos} to Foto
+}
+
+search Usuario, Album with elasticsearch
+
+paginate Usuario, Amigo, Album, Muro, Mensaje, Foto with infinite-scroll
