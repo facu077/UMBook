@@ -1,12 +1,12 @@
-entity Usuario {
-	
-}
-
 entity Amigo {
-	estado String
+	estado Estado
 }
 
 entity Muro {
+
+}
+
+entity User {
 
 }
 
@@ -23,19 +23,21 @@ entity Foto {
 	imagen ImageBlob
 }
 
+enum Estado {
+    Aceptado, Rechazado, Esperando
+}
 
 relationship OneToOne {
-	User{usuario} to Usuario
-    Usuario{muro} to Muro
+    Muro{usuario} to User
 }
 
 relationship OneToMany {
 	Muro{mensajes} to Mensaje
-    Usuario{amigos} to Amigo
-    Usuario{albums} to Album
     Album{fotos} to Foto
 }
 
-search Usuario, Album with elasticsearch
-
-paginate Usuario, Amigo, Album, Muro, Mensaje, Foto with infinite-scroll
+relationship ManyToOne {
+	Amigo{usuario} to User
+    Amigo{amigo} to User
+    Album{usuario} to User
+}

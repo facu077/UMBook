@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-foto-heading">Create or edit a Foto</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!foto.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="foto.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_imagen">Imagen</label>
+                    <div>
+                        <img [src]="'data:' + foto.imagenContentType + ';base64,' + foto.imagen" style="max-height: 100px;" *ngIf="foto.imagen" alt="foto image"/>
+                        <div *ngIf="foto.imagen" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{foto.imagenContentType}}, {{byteSize(foto.imagen)}}</span>
+                            <button type="button" (click)="clearInputImage('imagen', 'imagenContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_imagen" (change)="setFileData($event, foto, 'imagen', true)" accept="image/*"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="imagen" id="field_imagen"
+                        [(ngModel)]="foto.imagen" />
+                    <input type="hidden" class="form-control" name="imagenContentType" id="field_imagenContentType"
+                        [(ngModel)]="foto.imagenContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_album">Album</label>
+                    <select class="form-control" id="field_album" name="album" [(ngModel)]="foto.album" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="albumOption.id === foto.album?.id ? foto.album : albumOption" *ngFor="let albumOption of albums; trackBy: trackAlbumById">{{albumOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

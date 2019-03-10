@@ -1,0 +1,28 @@
+{
+    "name": "Album",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "foto",
+            "otherEntityRelationshipName": "album",
+            "relationshipName": "fotos"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "album",
+            "relationshipName": "usuario",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190310012620",
+    "entityTableName": "album",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

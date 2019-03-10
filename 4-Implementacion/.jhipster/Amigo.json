@@ -1,0 +1,35 @@
+{
+    "name": "Amigo",
+    "fields": [
+        {
+            "fieldName": "estado",
+            "fieldType": "Estado",
+            "fieldValues": "Aceptado,Rechazado,Esperando"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "amigo",
+            "relationshipName": "usuario",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "amigo",
+            "relationshipName": "amigo",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190310012616",
+    "entityTableName": "amigo",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
