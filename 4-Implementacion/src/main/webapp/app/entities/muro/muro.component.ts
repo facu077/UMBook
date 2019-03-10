@@ -6,7 +6,7 @@ import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { IMuro } from 'app/shared/model/muro.model';
-import { AccountService } from 'app/core';
+import { AccountService } from '../../core';
 import { MuroService } from './muro.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { MuroService } from './muro.service';
 })
 export class MuroComponent implements OnInit, OnDestroy {
     muros: IMuro[];
-    currentAccount: any;
+    currentAccount: any = [];
     eventSubscriber: Subscription;
     currentSearch: string;
 

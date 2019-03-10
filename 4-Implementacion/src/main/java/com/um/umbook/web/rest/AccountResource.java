@@ -2,7 +2,9 @@ package com.um.umbook.web.rest;
 
 
 import com.um.umbook.domain.User;
+import com.um.umbook.domain.Muro;
 import com.um.umbook.repository.UserRepository;
+import com.um.umbook.repository.MuroRepository;
 import com.um.umbook.security.SecurityUtils;
 import com.um.umbook.service.MailService;
 import com.um.umbook.service.UserService;
@@ -33,12 +35,18 @@ public class AccountResource {
 
     private final UserRepository userRepository;
 
+    private final MuroRepository muroRepository;
+
     private final UserService userService;
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
-
+    public AccountResource(UserRepository userRepository,
+                           UserService userService,
+                           MailService mailService,
+                           MuroRepository muroRepository)
+    {
+        this.muroRepository = muroRepository;
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
@@ -59,6 +67,9 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        Muro muro = new Muro();
+        muro.setUsuario(user);
+        muroRepository.save(muro);
         mailService.sendActivationEmail(user);
     }
 

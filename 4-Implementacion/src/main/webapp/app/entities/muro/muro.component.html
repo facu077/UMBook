@@ -1,6 +1,6 @@
-<div>
+<!-- <div>
     <h2 id="page-heading">
-        <span>Muros</span>
+        <span>Muro</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-muro" [routerLink]="['/muro/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
@@ -67,5 +67,16 @@
             </tr>
             </tbody>
         </table>
+    </div>
+</div> -->
+
+<div class="row">
+    <div class="col-md-2">
+        <div><img class="img-thumbnail" src="../../../content/images/Profile_placeholder.png"></div>
+        <div>{{currentAccount.login}}</div>
+        <div><button>Ver Albums</button></div>
+    </div>
+    <div class="col-md-10">
+        <jhi-mensaje></jhi-mensaje>
     </div>
 </div>

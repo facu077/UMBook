@@ -38,9 +38,9 @@ import { UmbookMuroModule } from './muro/muro.module';
                 loadChildren: './amigo/amigo.module#UmbookAmigoModule'
             }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
-        ]),
-        UmbookMuroModule
+        ])
     ],
+    exports: [UmbookMuroModule],
     declarations: [],
     entryComponents: [],
     providers: [],
