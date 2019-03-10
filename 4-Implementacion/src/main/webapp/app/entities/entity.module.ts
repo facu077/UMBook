@@ -1,5 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { UmbookMuroModule } from './muro/muro.module';
 
 @NgModule({
     imports: [
@@ -37,7 +38,8 @@ import { RouterModule } from '@angular/router';
                 loadChildren: './amigo/amigo.module#UmbookAmigoModule'
             }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
-        ])
+        ]),
+        UmbookMuroModule
     ],
     declarations: [],
     entryComponents: [],
