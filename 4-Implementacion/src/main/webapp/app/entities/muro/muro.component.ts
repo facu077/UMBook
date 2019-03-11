@@ -5,8 +5,8 @@ import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import { IMuro } from 'app/shared/model/muro.model';
-import { AccountService } from 'app/core';
+import { IMuro } from '../../shared/model/muro.model';
+import { AccountService } from '../../core';
 import { MuroService } from './muro.service';
 
 @Component({
@@ -15,9 +15,9 @@ import { MuroService } from './muro.service';
 })
 export class MuroComponent implements OnInit, OnDestroy {
     muros: IMuro[];
-    currentAccount: any;
+    muro: IMuro;
+    currentAccount: any = [];
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         protected muroService: MuroService,
@@ -25,26 +25,9 @@ export class MuroComponent implements OnInit, OnDestroy {
         protected eventManager: JhiEventManager,
         protected activatedRoute: ActivatedRoute,
         protected accountService: AccountService
-    ) {
-        this.currentSearch =
-            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
-                ? this.activatedRoute.snapshot.params['search']
-                : '';
-    }
+    ) {}
 
     loadAll() {
-        if (this.currentSearch) {
-            this.muroService
-                .search({
-                    query: this.currentSearch
-                })
-                .pipe(
-                    filter((res: HttpResponse<IMuro[]>) => res.ok),
-                    map((res: HttpResponse<IMuro[]>) => res.body)
-                )
-                .subscribe((res: IMuro[]) => (this.muros = res), (res: HttpErrorResponse) => this.onError(res.message));
-            return;
-        }
         this.muroService
             .query()
             .pipe(
@@ -54,22 +37,19 @@ export class MuroComponent implements OnInit, OnDestroy {
             .subscribe(
                 (res: IMuro[]) => {
                     this.muros = res;
-                    this.currentSearch = '';
+                    if (this.muros) {
+                        for (const muro of this.muros) {
+                            if (muro.usuario.id === this.currentAccount.id) {
+                                this.muro = muro;
+                            }
+                        }
+                    }
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
 

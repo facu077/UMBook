@@ -30,7 +30,7 @@ export class MensajeResolve implements Resolve<IMensaje> {
 
 export const mensajeRoute: Routes = [
     {
-        path: '',
+        path: 'mensajes',
         component: MensajeComponent,
         data: {
             authorities: ['ROLE_USER'],

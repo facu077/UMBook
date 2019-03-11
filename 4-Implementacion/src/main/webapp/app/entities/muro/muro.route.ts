@@ -30,11 +30,11 @@ export class MuroResolve implements Resolve<IMuro> {
 
 export const muroRoute: Routes = [
     {
-        path: '',
+        path: 'muro',
         component: MuroComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'Muros'
+            pageTitle: 'Muro'
         },
         canActivate: [UserRouteAccessService]
     },

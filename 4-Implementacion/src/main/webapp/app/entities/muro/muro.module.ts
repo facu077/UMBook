@@ -1,5 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { UmbookMensajeModule } from '../mensaje/mensaje.module';
 
 import { UmbookSharedModule } from 'app/shared';
 import {
@@ -15,9 +16,10 @@ import {
 const ENTITY_STATES = [...muroRoute, ...muroPopupRoute];
 
 @NgModule({
-    imports: [UmbookSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    imports: [UmbookSharedModule, RouterModule.forChild(ENTITY_STATES), UmbookMensajeModule],
     declarations: [MuroComponent, MuroDetailComponent, MuroUpdateComponent, MuroDeleteDialogComponent, MuroDeletePopupComponent],
     entryComponents: [MuroComponent, MuroUpdateComponent, MuroDeleteDialogComponent, MuroDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    exports: [MuroComponent]
 })
 export class UmbookMuroModule {}
