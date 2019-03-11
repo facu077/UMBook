@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import { IAmigo } from 'app/shared/model/amigo.model';
-import { AccountService } from 'app/core';
+import { IAmigo, Estado } from '../../shared/model/amigo.model';
+import { AccountService, IUser, UserService } from 'app/core';
 import { AmigoService } from './amigo.service';
 
 @Component({
@@ -17,34 +17,21 @@ export class AmigoComponent implements OnInit, OnDestroy {
     amigos: IAmigo[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
+
+    users: IUser[];
+
+    isSaving: boolean;
 
     constructor(
         protected amigoService: AmigoService,
         protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
         protected activatedRoute: ActivatedRoute,
-        protected accountService: AccountService
-    ) {
-        this.currentSearch =
-            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
-                ? this.activatedRoute.snapshot.params['search']
-                : '';
-    }
+        protected accountService: AccountService,
+        protected userService: UserService
+    ) {}
 
     loadAll() {
-        if (this.currentSearch) {
-            this.amigoService
-                .search({
-                    query: this.currentSearch
-                })
-                .pipe(
-                    filter((res: HttpResponse<IAmigo[]>) => res.ok),
-                    map((res: HttpResponse<IAmigo[]>) => res.body)
-                )
-                .subscribe((res: IAmigo[]) => (this.amigos = res), (res: HttpErrorResponse) => this.onError(res.message));
-            return;
-        }
         this.amigoService
             .query()
             .pipe(
@@ -53,23 +40,46 @@ export class AmigoComponent implements OnInit, OnDestroy {
             )
             .subscribe(
                 (res: IAmigo[]) => {
+                    for (const friend of res) {
+                        if (friend.amigo.id !== this.currentAccount.id) {
+                            const index = res.indexOf(friend);
+                            res.splice(index, 1);
+                        }
+                    }
                     this.amigos = res;
-                    this.currentSearch = '';
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+
+        this.userService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IUser[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IUser[]>) => response.body)
+            )
+            .subscribe(
+                (res: IUser[]) => {
+                    for (const user of res) {
+                        if (user.id < 5 || user.id === this.currentAccount.id) {
+                            const index = res.indexOf(user);
+                            res.splice(index, 1);
+                        }
+                        for (const amigo of this.amigos) {
+                            if (amigo.amigo.id === user.id) {
+                                const index = res.indexOf(user);
+                                res.splice(index, 1);
+                            }
+                        }
+                    }
+                    this.users = res;
+                    this.users.reverse();
+                    this.users.splice(this.users.indexOf(this.users[0], 1));
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
 
@@ -79,6 +89,41 @@ export class AmigoComponent implements OnInit, OnDestroy {
             this.currentAccount = account;
         });
         this.registerChangeInAmigos();
+    }
+
+    addFriend(user: IUser) {
+        this.isSaving = true;
+
+        let amigo: IAmigo = {
+            estado: Estado.Aceptado,
+            amigo: user,
+            usuario: this.currentAccount
+        };
+        this.subscribeToSaveResponse(this.amigoService.create(amigo));
+
+        amigo = {
+            estado: Estado.Aceptado,
+            amigo: this.currentAccount,
+            usuario: user
+        };
+        this.subscribeToSaveResponse(this.amigoService.create(amigo));
+    }
+
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<IAmigo>>) {
+        result.subscribe((res: HttpResponse<IAmigo>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+    }
+
+    protected onSaveSuccess() {
+        this.isSaving = false;
+        this.loadAll();
+    }
+
+    protected onSaveError() {
+        this.isSaving = false;
+    }
+
+    protected onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
     }
 
     ngOnDestroy() {
@@ -91,9 +136,5 @@ export class AmigoComponent implements OnInit, OnDestroy {
 
     registerChangeInAmigos() {
         this.eventSubscriber = this.eventManager.subscribe('amigoListModification', response => this.loadAll());
-    }
-
-    protected onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
     }
 }

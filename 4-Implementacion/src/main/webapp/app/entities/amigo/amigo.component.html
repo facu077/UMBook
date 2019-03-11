@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <h2 id="page-heading">
         <span>Amigos</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-amigo" [routerLink]="['/amigo/new']">
@@ -74,4 +74,38 @@
             </tbody>
         </table>
     </div>
+</div> -->
+
+<div>
+    <div class="row">
+        <h3>Amigos</h3>
+        <div class="table-responsive" *ngIf="amigos && amigos.length > 0">
+            <table class="table table-striped">
+                <tbody>
+                <tr *ngFor="let amigo of amigos">
+                    <td>{{amigo.usuario.login}}</td>
+                    <td class="text-right">
+                        <button [disabled]="isSaving" class="btn btn-dark" type="button">Ver muro</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <h3>Usuarios</h3>
+        <div class="table-responsive" *ngIf="users && users.length > 0">
+            <table class="table table-striped">
+                <tbody>
+                <tr *ngFor="let user of users">
+                    <td>{{user.login}}</td>
+                    <td class="text-right">
+                        <button [disabled]="isSaving" (click)="addFriend(user)" class="btn btn-dark" type="button">Agregar a amigos</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>

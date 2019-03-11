@@ -75,7 +75,7 @@
         <div><img class="img-thumbnail" src="../../../content/images/Profile_placeholder.png"></div>
         <h4 class="text-center">{{currentAccount.login}}</h4>
         <hr />
-        <button type="button" class="btn btn-dark">Ver Amigos</button>
+        <a class="btn btn-dark" routerLink="amigo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" role="button">Ver amigos</a>
     </div>
     <div class="col-md-10">
         <jhi-mensaje [muro]="muro"></jhi-mensaje>
