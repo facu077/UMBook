@@ -40,4 +40,5 @@ relationship ManyToOne {
 	Amigo{usuario} to User
     Amigo{amigo} to User
     Album{usuario} to User
+    Mensaje{usuario} to User
 }

@@ -19,6 +19,10 @@
                         <a [routerLink]="['/muro', mensaje.muro?.id, 'view']">{{mensaje.muro?.id}}</a>
                     </div>
                 </dd>
+                <dt><span>Usuario</span></dt>
+                <dd>
+                    {{mensaje.usuario?.id}}
+                </dd>
             </dl>
 
             <button type="submit"

@@ -24,7 +24,6 @@ const ENTITY_STATES = [...mensajeRoute, ...mensajePopupRoute];
         MensajeDeletePopupComponent
     ],
     entryComponents: [MensajeComponent, MensajeUpdateComponent, MensajeDeleteDialogComponent, MensajeDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    exports: [MensajeComponent]
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class UmbookMensajeModule {}

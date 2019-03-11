@@ -29,6 +29,13 @@
                         <option [ngValue]="muroOption.id === mensaje.muro?.id ? mensaje.muro : muroOption" *ngFor="let muroOption of muros; trackBy: trackMuroById">{{muroOption.id}}</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_usuario">Usuario</label>
+                    <select class="form-control" id="field_usuario" name="usuario" [(ngModel)]="mensaje.usuario" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userOption.id === mensaje.usuario?.id ? mensaje.usuario : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

@@ -63,7 +63,8 @@ export class MensajeComponent implements OnInit, OnDestroy {
         const newMensaje: IMensaje = {
             fecha: moment(new Date(), DATE_TIME_FORMAT),
             texto: this.currentTxt,
-            muro: this.muro
+            muro: this.muro,
+            usuario: this.usuario
         };
         this.subscribeToSaveResponse(this.mensajeService.create(newMensaje));
         this.currentTxt = '';

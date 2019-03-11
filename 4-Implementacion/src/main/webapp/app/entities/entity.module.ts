@@ -36,6 +36,10 @@ import { UmbookMuroModule } from './muro/muro.module';
             {
                 path: 'amigo',
                 loadChildren: './amigo/amigo.module#UmbookAmigoModule'
+            },
+            {
+                path: 'mensaje',
+                loadChildren: './mensaje/mensaje.module#UmbookMensajeModule'
             }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
         ])
