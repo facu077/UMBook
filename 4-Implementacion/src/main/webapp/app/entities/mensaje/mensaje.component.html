@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <h2 id="page-heading">
         <span>Mensajes</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-mensaje" [routerLink]="['/mensaje/new']">
@@ -73,5 +73,25 @@
             </tr>
             </tbody>
         </table>
+    </div>
+</div> -->
+
+<div>
+    <div *ngFor="let mensaje of mensajesMuro">
+        <div class="card">
+            <div class="card-header">
+                {{mensaje.muro.usuario.login}}
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{mensaje.texto}}</p>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="input-group">
+        <textarea class="form-control" aria-label="With textarea" [(ngModel)]="currentTxt"></textarea>
+        <div class="input-group-prepend">
+            <button type="button" class="btn btn-dark" (click)="newMsj()" [disabled]="isSaving || !canSendMsj()">Enviar</button>
+        </div>
     </div>
 </div>

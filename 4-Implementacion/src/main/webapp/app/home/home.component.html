@@ -3,6 +3,10 @@
         <div [ngSwitch]="isAuthenticated()">
             <div *ngSwitchCase="true">
                 <jhi-muro></jhi-muro>
+                <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                    <h1 class="display-4">Welcome to UMBook</h1>
+                    <span>Now you are logged in as an Admin</span>
+                </div>
             </div>
             <div *ngSwitchCase="false">
                 <h1 class="display-4">Welcome to UMBook</h1>
