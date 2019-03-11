@@ -6,7 +6,7 @@ import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { IMuro } from '../../shared/model/muro.model';
-import { AccountService } from '../../core';
+import { AccountService, IUser } from '../../core';
 import { MuroService } from './muro.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class MuroComponent implements OnInit, OnDestroy {
     muros: IMuro[];
     muro: IMuro;
     currentAccount: any = [];
+    muroAccount: any;
     eventSubscriber: Subscription;
 
     constructor(
@@ -36,10 +37,16 @@ export class MuroComponent implements OnInit, OnDestroy {
             )
             .subscribe(
                 (res: IMuro[]) => {
+                    let account: IUser;
+                    if (this.muroAccount) {
+                        account = this.muroAccount;
+                    } else {
+                        account = this.currentAccount;
+                    }
                     this.muros = res;
                     if (this.muros) {
                         for (const muro of this.muros) {
-                            if (muro.usuario.id === this.currentAccount.id) {
+                            if (muro.usuario.id == account.id) {
                                 this.muro = muro;
                             }
                         }
@@ -58,11 +65,24 @@ export class MuroComponent implements OnInit, OnDestroy {
         this.accountService.identity().then(account => {
             this.currentAccount = account;
         });
+        this.activatedRoute.params.subscribe(params => {
+            if (params['id'] && params['login']) {
+                this.muroAccount = { id: params['id'], login: params['login'] };
+            }
+        });
         this.registerChangeInMuros();
     }
 
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
+    }
+
+    getUsuario() {
+        if (this.muroAccount) {
+            return this.currentAccount;
+        } else {
+            this.muro.usuario;
+        }
     }
 
     trackId(index: number, item: IMuro) {

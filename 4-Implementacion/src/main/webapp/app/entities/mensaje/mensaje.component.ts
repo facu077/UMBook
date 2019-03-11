@@ -8,7 +8,7 @@ import * as moment from 'moment';
 
 import { IMensaje } from '../../shared/model/mensaje.model';
 import { IMuro } from '../../shared/model/muro.model';
-import { AccountService } from '../../core';
+import { AccountService, IUser } from '../../core';
 import { MensajeService } from './mensaje.service';
 import { DATE_TIME_FORMAT } from '../../shared/constants/input.constants';
 
@@ -18,6 +18,7 @@ import { DATE_TIME_FORMAT } from '../../shared/constants/input.constants';
 })
 export class MensajeComponent implements OnInit, OnDestroy {
     @Input() muro: IMuro;
+    @Input() usuario: IUser;
 
     mensajes: IMensaje[];
     mensajesMuro: IMensaje[] = [];
@@ -78,7 +79,8 @@ export class MensajeComponent implements OnInit, OnDestroy {
 
     protected onSaveSuccess() {
         this.isSaving = false;
-        this.loadAll();
+        // this.loadAll();
+        this.registerChangeInMensajes();
     }
 
     protected onSaveError() {
