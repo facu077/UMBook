@@ -18,7 +18,7 @@ export class AmigoComponent implements OnInit, OnDestroy {
     currentAccount: any;
     eventSubscriber: Subscription;
 
-    users: IUser[];
+    users: IUser[] = [];
 
     isSaving: boolean;
 
@@ -47,10 +47,13 @@ export class AmigoComponent implements OnInit, OnDestroy {
                         }
                     }
                     this.amigos = res;
+                    this.loadUsers();
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
+    }
 
+    loadUsers() {
         this.userService
             .query()
             .pipe(
@@ -60,20 +63,19 @@ export class AmigoComponent implements OnInit, OnDestroy {
             .subscribe(
                 (res: IUser[]) => {
                     for (const user of res) {
-                        if (user.id < 5 || user.id === this.currentAccount.id) {
-                            const index = res.indexOf(user);
-                            res.splice(index, 1);
+                        if (user.id > 5 && user.id != this.currentAccount.id) {
+                            this.users.push(user);
                         }
                         for (const amigo of this.amigos) {
-                            if (amigo.amigo.id === user.id) {
-                                const index = res.indexOf(user);
-                                res.splice(index, 1);
+                            if (amigo.usuario.id == user.id) {
+                                const index = this.users.indexOf(user);
+                                this.users.splice(index, 1);
                             }
                         }
                     }
-                    this.users = res;
-                    this.users.reverse();
-                    this.users.splice(this.users.indexOf(this.users[0], 1));
+                    // this.users = res;
+                    // this.users.reverse();
+                    // this.users.splice(this.users.indexOf(this.users[0], 1));
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );

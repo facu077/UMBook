@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="muro"/>
 
+        <addForeignKeyConstraint baseColumnNames="usuario_id"
+                                 baseTableName="mensaje"
+                                 constraintName="fk_mensaje_usuario_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
     </changeSet>
 </databaseChangeLog>

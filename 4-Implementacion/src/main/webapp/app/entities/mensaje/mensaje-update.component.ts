@@ -10,6 +10,7 @@ import { IMensaje } from 'app/shared/model/mensaje.model';
 import { MensajeService } from './mensaje.service';
 import { IMuro } from 'app/shared/model/muro.model';
 import { MuroService } from 'app/entities/muro';
+import { IUser, UserService } from 'app/core';
 
 @Component({
     selector: 'jhi-mensaje-update',
@@ -20,12 +21,15 @@ export class MensajeUpdateComponent implements OnInit {
     isSaving: boolean;
 
     muros: IMuro[];
+
+    users: IUser[];
     fecha: string;
 
     constructor(
         protected jhiAlertService: JhiAlertService,
         protected mensajeService: MensajeService,
         protected muroService: MuroService,
+        protected userService: UserService,
         protected activatedRoute: ActivatedRoute
     ) {}
 
@@ -42,6 +46,13 @@ export class MensajeUpdateComponent implements OnInit {
                 map((response: HttpResponse<IMuro[]>) => response.body)
             )
             .subscribe((res: IMuro[]) => (this.muros = res), (res: HttpErrorResponse) => this.onError(res.message));
+        this.userService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IUser[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IUser[]>) => response.body)
+            )
+            .subscribe((res: IUser[]) => (this.users = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {
@@ -76,6 +87,10 @@ export class MensajeUpdateComponent implements OnInit {
     }
 
     trackMuroById(index: number, item: IMuro) {
+        return item.id;
+    }
+
+    trackUserById(index: number, item: IUser) {
         return item.id;
     }
 }

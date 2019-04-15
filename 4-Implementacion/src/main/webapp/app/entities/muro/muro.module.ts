@@ -16,7 +16,7 @@ import {
 const ENTITY_STATES = [...muroRoute, ...muroPopupRoute];
 
 @NgModule({
-    imports: [UmbookSharedModule, RouterModule.forChild(ENTITY_STATES), UmbookMensajeModule],
+    imports: [UmbookMensajeModule, UmbookSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [MuroComponent, MuroDetailComponent, MuroUpdateComponent, MuroDeleteDialogComponent, MuroDeletePopupComponent],
     entryComponents: [MuroComponent, MuroUpdateComponent, MuroDeleteDialogComponent, MuroDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

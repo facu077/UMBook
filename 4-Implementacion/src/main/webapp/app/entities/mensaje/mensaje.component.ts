@@ -8,7 +8,7 @@ import * as moment from 'moment';
 
 import { IMensaje } from '../../shared/model/mensaje.model';
 import { IMuro } from '../../shared/model/muro.model';
-import { AccountService } from '../../core';
+import { AccountService, IUser } from '../../core';
 import { MensajeService } from './mensaje.service';
 import { DATE_TIME_FORMAT } from '../../shared/constants/input.constants';
 
@@ -18,6 +18,7 @@ import { DATE_TIME_FORMAT } from '../../shared/constants/input.constants';
 })
 export class MensajeComponent implements OnInit, OnDestroy {
     @Input() muro: IMuro;
+    @Input() usuario: IUser;
 
     mensajes: IMensaje[];
     mensajesMuro: IMensaje[] = [];
@@ -35,7 +36,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
         protected accountService: AccountService
     ) {}
 
-    loadAll() {
+    async loadAll() {
         this.mensajeService
             .query()
             .pipe(
@@ -59,12 +60,17 @@ export class MensajeComponent implements OnInit, OnDestroy {
 
     newMsj() {
         this.isSaving = true;
+        if (!this.usuario) {
+            this.usuario = this.currentAccount;
+        }
         const newMensaje: IMensaje = {
             fecha: moment(new Date(), DATE_TIME_FORMAT),
             texto: this.currentTxt,
-            muro: this.muro
+            muro: this.muro,
+            usuario: this.usuario
         };
         this.subscribeToSaveResponse(this.mensajeService.create(newMensaje));
+        this.mensajesMuro.push(newMensaje);
         this.currentTxt = '';
     }
 
@@ -78,7 +84,8 @@ export class MensajeComponent implements OnInit, OnDestroy {
 
     protected onSaveSuccess() {
         this.isSaving = false;
-        this.loadAll();
+        // this.loadAll();
+        this.registerChangeInMensajes();
     }
 
     protected onSaveError() {

@@ -85,7 +85,7 @@
                 <tr *ngFor="let amigo of amigos">
                     <td>{{amigo.usuario.login}}</td>
                     <td class="text-right">
-                        <button [disabled]="isSaving" class="btn btn-dark" type="button">Ver muro</a>
+                        <a class="btn btn-dark" [routerLink]="['/muro', amigo.usuario.id, amigo.usuario.login]" role="button">Ver muro</a>
                     </td>
                 </tr>
                 </tbody>
