@@ -1,6 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { UmbookMuroModule } from './muro/muro.module';
+import { UmbookMensajeModule } from './mensaje/mensaje.module';
 
 @NgModule({
     imports: [

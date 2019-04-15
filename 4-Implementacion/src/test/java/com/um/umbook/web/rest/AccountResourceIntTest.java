@@ -81,7 +81,7 @@ public class AccountResourceIntTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        /*MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail(any());
         AccountResource accountResource =
             new AccountResource(userRepository, userService, mockMailService);
@@ -94,7 +94,7 @@ public class AccountResourceIntTest {
             .build();
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(accountUserMockResource)
             .setControllerAdvice(exceptionTranslator)
-            .build();
+            .build();*/
     }
 
     @Test

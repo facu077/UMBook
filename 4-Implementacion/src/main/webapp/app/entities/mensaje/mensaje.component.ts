@@ -36,7 +36,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
         protected accountService: AccountService
     ) {}
 
-    loadAll() {
+    async loadAll() {
         this.mensajeService
             .query()
             .pipe(
@@ -60,6 +60,9 @@ export class MensajeComponent implements OnInit, OnDestroy {
 
     newMsj() {
         this.isSaving = true;
+        if (!this.usuario) {
+            this.usuario = this.currentAccount;
+        }
         const newMensaje: IMensaje = {
             fecha: moment(new Date(), DATE_TIME_FORMAT),
             texto: this.currentTxt,
@@ -67,6 +70,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
             usuario: this.usuario
         };
         this.subscribeToSaveResponse(this.mensajeService.create(newMensaje));
+        this.mensajesMuro.push(newMensaje);
         this.currentTxt = '';
     }
 
