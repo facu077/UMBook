@@ -40,13 +40,15 @@ export class AmigoComponent implements OnInit, OnDestroy {
             )
             .subscribe(
                 (res: IAmigo[]) => {
+                    let currentUserFriends: IAmigo[] = [];
                     for (const friend of res) {
-                        if (friend.amigo.id !== this.currentAccount.id) {
-                            const index = res.indexOf(friend);
-                            res.splice(index, 1);
+                        if (friend.amigo.id == this.currentAccount.id) {
+                            // const index = res.indexOf(friend);
+                            // res.splice(index, 1);
+                            currentUserFriends.push(friend);
                         }
                     }
-                    this.amigos = res;
+                    this.amigos = currentUserFriends;
                     this.loadUsers();
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
@@ -63,7 +65,7 @@ export class AmigoComponent implements OnInit, OnDestroy {
             .subscribe(
                 (res: IUser[]) => {
                     for (const user of res) {
-                        if (user.id > 5 && user.id != this.currentAccount.id) {
+                        if (user.id > 4 && user.id != this.currentAccount.id) {
                             this.users.push(user);
                         }
                         for (const amigo of this.amigos) {
@@ -109,6 +111,11 @@ export class AmigoComponent implements OnInit, OnDestroy {
             usuario: user
         };
         this.subscribeToSaveResponse(this.amigoService.create(amigo));
+
+        const index = this.users.indexOf(user);
+        this.users.splice(index, 1);
+
+        this.amigos.push(amigo);
     }
 
     protected subscribeToSaveResponse(result: Observable<HttpResponse<IAmigo>>) {
@@ -117,7 +124,7 @@ export class AmigoComponent implements OnInit, OnDestroy {
 
     protected onSaveSuccess() {
         this.isSaving = false;
-        this.loadAll();
+        // this.loadAll();
     }
 
     protected onSaveError() {
