@@ -16,6 +16,13 @@
             "otherEntityName": "muro",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "mensaje",
+            "relationshipName": "usuario",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20190310012619",

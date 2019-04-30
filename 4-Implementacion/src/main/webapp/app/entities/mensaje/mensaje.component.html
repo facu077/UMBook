@@ -1,86 +1,13 @@
-<!-- <div>
-    <h2 id="page-heading">
-        <span>Mensajes</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-mensaje" [routerLink]="['/mensaje/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span class="hidden-sm-down" >
-            Create new Mensaje
-            </span>
-        </button>
-    </h2>
-    <jhi-alert></jhi-alert>
-    <div class="row">
-        <div class="col-sm-12">
-            <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query">
-                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                        <fa-icon [icon]="'search'"></fa-icon>
-                    </button>
-                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <fa-icon [icon]="'trash-alt'"></fa-icon>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <br/>
-    <div class="table-responsive" *ngIf="mensajes">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-            <th><span>ID</span></th>
-            <th><span>Texto</span></th>
-            <th><span>Fecha</span></th>
-            <th><span>Muro</span></th>
-            <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let mensaje of mensajes ;trackBy: trackId">
-                <td><a [routerLink]="['/mensaje', mensaje.id, 'view' ]">{{mensaje.id}}</a></td>
-                <td>{{mensaje.texto}}</td>
-                <td>{{mensaje.fecha | date:'medium'}}</td>
-                <td>
-                    <div *ngIf="mensaje.muro">
-                        <a [routerLink]="['../muro', mensaje.muro?.id, 'view' ]" >{{mensaje.muro?.id}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['/mensaje', mensaje.id, 'view' ]"
-                                class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/mensaje', mensaje.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', 'mensaje', { outlets: { popup: mensaje.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div> -->
-
 <div>
     <div *ngFor="let mensaje of mensajesMuro">
         <div class="card">
             <div class="card-header">
-                {{mensaje.muro.usuario.login}}
+                <div class="d-inline text-left">
+                    {{mensaje.usuario.login}}
+                </div>
+                <div class="d-inline text-right">
+                    {{mensaje.fecha | date:'d/M/yy h:mm a'}}
+                </div>
             </div>
             <div class="card-body">
                 <p class="card-text">{{mensaje.texto}}</p>
@@ -88,7 +15,7 @@
         </div>
     </div>
     <hr />
-    <div class="input-group">
+    <div class="input-group" (keydown.enter)="newMsj()">
         <textarea class="form-control" aria-label="With textarea" [(ngModel)]="currentTxt"></textarea>
         <div class="input-group-prepend">
             <button type="button" class="btn btn-dark" (click)="newMsj()" [disabled]="isSaving || !canSendMsj()">Enviar</button>
