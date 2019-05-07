@@ -1,2 +1,0 @@
-Patrones..
-DAO, JPA, MVC
